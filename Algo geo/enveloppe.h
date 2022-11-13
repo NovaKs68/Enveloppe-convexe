@@ -16,7 +16,8 @@ Sommet* enveloppe(const Point &a, const Point &b, const Point &c, Polygone &P);
 // On suppose P initialement vide.
 void enveloppe(std::vector<Point>&T, Polygone &P);
 
-bool sortPointsLeftToRight(Point a, Point b);
+// Range les points de gauche à droite et de haut en bas
+bool sortPoints(Point a, Point b);
 
 
 #endif

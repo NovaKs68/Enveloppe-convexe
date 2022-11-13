@@ -66,8 +66,3 @@ void Polygone::supprimeSommet(Sommet* s)
 	// Supprimer le sommet
 	s->~Sommet();
 }
-
-
-
-
-

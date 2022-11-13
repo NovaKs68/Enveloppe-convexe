@@ -6,3 +6,9 @@ int Point::aGauche(const Point &a, const Point &b) const
 {
 	return ((b.d_x - a.d_x) * (this->d_y - a.d_y)) - ((this->d_x - a.d_x) * (b.d_y - a.d_y));
 }
+
+// Compare les coordonnées de deux points
+bool Point::operator==(const Point& comparaisonPoint)
+{
+	return (*this).d_x == comparaisonPoint.x() && (*this).d_y == comparaisonPoint.y();
+}

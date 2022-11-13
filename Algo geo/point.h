@@ -16,6 +16,9 @@ public:
 	// à gauche de, à droite de, ou sur la droite (ab) orientée de a vers b.
 	int aGauche(const Point &a, const Point &b) const;
 
+	// Compare les coordonnées de deux points
+	bool operator==(const Point&);
+
 
 private:
     // coordonnées

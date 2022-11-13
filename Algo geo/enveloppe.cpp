@@ -4,35 +4,31 @@
 #include "affichage.h"
 #include "graphics.h"
 
-
 #include <vector>
 #include <algorithm>
-#include <iostream>
-
 
 using namespace std;
-
 
 // Construit dans le polygone P l’enveloppe convexe des trois points a,b,c. On suppose P initialement vide.
 // La fonction renvoie l’adresse du sommet de coordonnées c.
 Sommet* enveloppe(const Point &a, const Point &b, const Point &c, Polygone &P)
 {
-	// Create a
+	// Créer le premier sommet a
 	P.ajouteSommet(a);
 
-	// Create acb
+	// Créer acb si le point c se trouve à gauche de a b
 	if (c.aGauche(a, b) && a.y() > b.y()) {
 		P.ajouteSommet(b, P.premier());
 		P.ajouteSommet(c, P.premier()->suivant());
 
-		// Return c
+		// Retourne le point c
 		return P.premier()->suivant()->suivant();
 
-	} else { // Create abc
+	} else { // Sinon créer abc
 		P.ajouteSommet(c, P.premier());
 		P.ajouteSommet(b, P.premier()->suivant());
 
-		// Return c
+		// Retourne le point c
 		return P.premier()->suivant();
 	}
 }
@@ -43,36 +39,28 @@ Sommet* enveloppe(const Point &a, const Point &b, const Point &c, Polygone &P)
 void enveloppe(std::vector<Point>&T, Polygone &P)
 {
 	// Sort vector left to right
-	std::sort(T.begin(), T.end(), sortPointsLeftToRight);
+	std::sort(T.begin(), T.end(), sortPoints);
 
-	// Define first triangle
+	// Défini le premier polygone
 	Sommet* sommet = enveloppe(T.at(0), T.at(1), T.at(2), P);
 
 	Sommet* intersection = sommet;
-	vector<Sommet*> sommetsToDelete;
 
-	// Iterate the vector of points
+	// Parcours tous les points
 	for (auto it = T.begin() + 3; it != T.end(); ++it) {
-
-		// getch();
-		/*cleardevice();
 
 		for (auto point : T)
 		{
 			plot(point.x(), point.y());
-		}*/
+		}
 
 		Sommet* nextSommet = P.premier()->suivant();
 
-		// Find end interesection
+		// Trouve le dernier sommet qui va être modifié par l'ajout du nouveau point
 		while (P.premier() != nextSommet)
 		{
 
 			int isAGauche = (*it).aGauche(nextSommet->coordonnees(), nextSommet->suivant()->coordonnees());
-
-			if (isAGauche == 0) {
-				std::cout << "shit";
-			}
 
 			if (0 > isAGauche) {
 				intersection = nextSommet;
@@ -81,49 +69,34 @@ void enveloppe(std::vector<Point>&T, Polygone &P)
 			nextSommet = nextSommet->suivant();
 		}
 
-		// Find all points to be deleted
+		// En partant du sommet précédement trouvé,
+		// supprime tous les sommets qui sont englobés par le nouveau point
 		while (true)
 		{
 			int isAGauche = (*it).aGauche(intersection->precedent()->coordonnees(), intersection->coordonnees());
 			int precedentIsAGauche = (*it).aGauche(intersection->coordonnees(), intersection->suivant()->coordonnees());
 
-			if (0 > isAGauche && 0 > precedentIsAGauche) {
-				sommetsToDelete.push_back(intersection);
+			if (0 >isAGauche && 0 > precedentIsAGauche) {
+				P.supprimeSommet(intersection);
 				intersection = intersection->precedent();
-				precedentIsAGauche = isAGauche;
 			}
 			else if (0 > isAGauche) {
 				intersection = intersection->precedent();
-				precedentIsAGauche = isAGauche;
 			}
 			else {
 				break;
 			}
 		}
 
-		// Add sommet
+		// Ajoute le nouveau sommet dans le polygone
 		P.ajouteSommet(*it, intersection);
-
-		// intersection = intersection->suivant();
-
-		for (auto sommetToDelete : sommetsToDelete) {
-			P.supprimeSommet(sommetToDelete);
-		}
-
-		sommetsToDelete.clear();
-
-		
-		// trace(P);
-		
-
-		
-		// intersection = sommet->suivant();
-
 	}
 
+	// Affiche le polygone
 	trace(P);
 }
 
-bool sortPointsLeftToRight(Point a, Point b) {
-	return (a.x() == b.x() ? a.y() < b.y() : a.x() < b.x());
+// Range les points de gauche à droite et de haut en bas
+bool sortPoints(Point a, Point b) {
+	return (a.x() == b.x() ? a.y() > b.y() : a.x() < b.x());
 }
