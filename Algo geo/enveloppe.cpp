@@ -1,7 +1,7 @@
 #include "enveloppe.h"
 #include "point.h"
 #include "polygone.h"
-#include "affichage.h"
+
 #include "graphics.h"
 
 #include <vector>
@@ -100,9 +100,6 @@ void enveloppe(std::vector<Point>&T, Polygone &P)
 		/*trace(P);
 		getch();*/
 	}
-
-	// Affiche le polygone
-	trace(P);
 }
 
 // Range les points de gauche à droite et de haut en bas

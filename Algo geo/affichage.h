@@ -4,10 +4,18 @@
 #include "point.h"
 #include "polygone.h"
 
-// trace un segment entre deux points a et b
-void segment(const Point & a, const Point & b);
+class Affichage {
 
-// trace le polygone P dans une fen�tre graphique
-void trace(const Polygone &P);
+public:
+	// trace un segment entre deux points a et b
+	static void segment(const Point& a, const Point& b);
+
+	// trace le polygone P dans une fen�tre graphique
+	static void trace(const Polygone& P);
+
+private:
+	static void traceAvecWinbgi(const Polygone& P);
+	static void traceAvecOpenGL(const Polygone& P);
+};
 
 #endif

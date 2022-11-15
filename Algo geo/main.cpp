@@ -7,6 +7,7 @@
 #include "point.h"
 #include "enveloppe.h"
 #include "graphics.h"
+#include "affichage.h"
 
 using namespace std;
 
@@ -68,6 +69,9 @@ int main(int argc, char* argv[], char* envp[])
 
     // Créer l'enveloppe convexe à partir d'un nuage de points
     enveloppe(nuagePoints, P);
+
+    // Affiche le polygone
+    Affichage::trace(P);
 
     getch();
     closegraph();

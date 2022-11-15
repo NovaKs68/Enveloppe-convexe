@@ -20,18 +20,32 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="affichage.cpp" />
+    <ClCompile Include="EBO.cpp" />
     <ClCompile Include="enveloppe.cpp" />
+    <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="polygone.cpp" />
+    <ClCompile Include="shaderClass.cpp" />
+    <ClCompile Include="VAO.cpp" />
+    <ClCompile Include="VBO.cpp" />
     <ClCompile Include="winbgi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="affichage.h" />
+    <ClInclude Include="EBO.h" />
     <ClInclude Include="enveloppe.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="linmath.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="polygone.h" />
+    <ClInclude Include="shaderClass.h" />
+    <ClInclude Include="VAO.h" />
+    <ClInclude Include="VBO.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="default.frag" />
+    <None Include="default.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -85,6 +99,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\wille\Documents\UHA\UHA 4.0.4\Algo geo\TD Polygone VS\Algo geo\Algo geo\Librairies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\wille\Documents\UHA\UHA 4.0.4\Algo geo\TD Polygone VS\Algo geo\Algo geo\Librairies\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\wille\Documents\UHA\UHA 4.0.4\Algo geo\TD Polygone VS\Algo geo\Algo geo\Librairies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\wille\Documents\UHA\UHA 4.0.4\Algo geo\TD Polygone VS\Algo geo\Algo geo\Librairies\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -95,7 +117,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,7 +146,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
