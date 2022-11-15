@@ -12,17 +12,17 @@ using namespace std;
 
 int main(int argc, char* argv[], char* envp[])
 {
-    const int nombreDePoints = 500;
+    const int nombreDePoints = 10000;
     const int tailleDeFenetre = 600;
 
     Polygone P = Polygone();
     vector<Point> nuagePoints;
 
-    // Seed le rand
+    // Seed le random
     srand(time(0));
 
     // Créer un nuage de point se trouvant dans la taille de la fenêtre
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < nombreDePoints; i++) {
         nuagePoints.push_back(Point(rand() % tailleDeFenetre, rand() % tailleDeFenetre));
     }
 
@@ -30,6 +30,29 @@ int main(int argc, char* argv[], char* envp[])
     nuagePoints.push_back(Point(30, 30));
     nuagePoints.push_back(Point(35, 50));
     nuagePoints.push_back(Point(60, 10));*/
+
+    /*nuagePoints.push_back(Point(10, 10));
+    nuagePoints.push_back(Point(50, 70));
+    nuagePoints.push_back(Point(60, 50));
+    nuagePoints.push_back(Point(90, 10));*/
+
+    /*nuagePoints.push_back(Point(10, 40));
+    nuagePoints.push_back(Point(20, 60));
+    nuagePoints.push_back(Point(40, 30));
+    nuagePoints.push_back(Point(60, 50));
+    nuagePoints.push_back(Point(70, 20));*/
+
+    /*nuagePoints.push_back(Point(10, 10));
+    nuagePoints.push_back(Point(20, 20));
+    nuagePoints.push_back(Point(30, 30));
+    nuagePoints.push_back(Point(30, 10));
+    nuagePoints.push_back(Point(30, 20));*/
+
+    /*nuagePoints.push_back(Point(10, 10));
+    nuagePoints.push_back(Point(10, 20));
+    nuagePoints.push_back(Point(10, 30));
+    nuagePoints.push_back(Point(10, 40));
+    nuagePoints.push_back(Point(30, 20));*/
 
     // Supprime tous les points dupliqués
     std::sort(nuagePoints.begin(), nuagePoints.end(), sortPoints);
