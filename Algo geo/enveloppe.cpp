@@ -2,7 +2,6 @@
 #include "point.h"
 #include "polygone.h"
 #include "affichage.h"
-#include "graphics.h"
 
 #include <vector>
 #include <algorithm>
@@ -68,8 +67,8 @@ void enveloppe(std::vector<Point>&T, Polygone &P)
 		} while (nextSommet != sommet);
 
 		if (premierSommet == NULL) {
-			P.ajouteSommet(*it, sommet);
-			sommet = sommet->suivant();
+			sommet = P.ajouteSommet(*it, sommet);
+			// sommet = sommet->suivant();
 
 			continue;
 		}
@@ -107,5 +106,5 @@ void enveloppe(std::vector<Point>&T, Polygone &P)
 
 // Range les points de gauche à droite et de haut en bas
 bool sortPoints(Point a, Point b) {
-	return (a.x() == b.x() ? a.y() < b.y() : a.x() < b.x());
+	return (a.x() < b.x() ? true : (a.x() == b.x()) ? a.y() < b.y() : false);
 }
