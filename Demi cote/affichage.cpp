@@ -1,12 +1,12 @@
 #include "affichage.h"
 #include "point.h"
 #include "carte.h"
-#include "../Algo geo/graphics.h"
+#include "graphics.h"
 
 // trace un segment entre deux points a et b
 void segment(const Point &a, const Point &b)
 {
-	line(a.x(), a.y(), b.x(), b.y());
+	line(a.x(), tailleDeFenetre - a.y(), b.x(), tailleDeFenetre - b.y());
 }
 
 // trace la carte C dans une fenêtre graphique

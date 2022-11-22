@@ -24,10 +24,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="polygone.cpp" />
+    <ClCompile Include="winbgi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="affichage.h" />
     <ClInclude Include="enveloppe.h" />
+    <ClInclude Include="graphics.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="polygone.h" />
   </ItemGroup>

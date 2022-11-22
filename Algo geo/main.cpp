@@ -6,7 +6,7 @@
 #include "polygone.h"
 #include "point.h"
 #include "enveloppe.h"
-#include "../Graphics/graphics.h"
+#include "graphics.h"
 
 using namespace std;
 

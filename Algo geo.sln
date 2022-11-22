@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Enveloppe convexe", "Algo g
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demi cote", "Demi cote\Demi cote.vcxproj", "{C1B8E9CC-DB79-4EE8-A7AE-FBE0A454D82D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "Graphics\Graphics.vcxitems", "{B0E2BA2B-B6C1-4123-9250-78AD2CEA6A64}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

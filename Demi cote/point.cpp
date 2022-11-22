@@ -4,7 +4,7 @@
 // à gauche de, à droite de, ou sur la droite (ab) orientée de a vers b.
 int Point::aGauche(const Point &a, const Point &b) const
 {
-	return 0;
+	return ((b.d_x - a.d_x) * (this->d_y - a.d_y)) - ((this->d_x - a.d_x) * (b.d_y - a.d_y));
 }
 
 // Compare les coordonnées de deux points
