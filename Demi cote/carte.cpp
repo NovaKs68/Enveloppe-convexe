@@ -122,3 +122,35 @@ DemiCote* Carte::ajouteDemiCote(const Point &p, DemiCote* oppose)
 
 	return nouveauDemiCote;
 }
+
+// Inverser le tracé entre le demi coté d et son opposé avec 
+void Carte::flip(DemiCote *d) 
+{
+	flipDemiCote(d);
+	flipDemiCote(d->oppose());
+}
+
+void Carte::flipDemiCote(DemiCote* d) {
+	// Defini un marqueur de la ou va se trouver le demi cote
+	auto demiCoteDepart = d->suivant()->oppose();
+
+	// Changer le demi cote représentant le sommet
+	if (d->d_sommet->demiCote() == d) {
+		d->d_sommet->d_demiCote = d->suivant();
+	}
+
+	// Changer les anciens voisins de d
+	d->suivant()->d_precedent = d->precedent();
+	d->precedent()->d_suivant = d->suivant();
+
+	// Deplacer d
+	d->d_precedent = demiCoteDepart;
+	d->d_suivant = demiCoteDepart->suivant();
+
+	// Changer les nouveaux voisins de d
+	d->precedent()->d_suivant = d;
+	d->suivant()->d_precedent = d;
+
+	// Mettre à jour le sommet de d
+	d->d_sommet = demiCoteDepart->sommet();
+}

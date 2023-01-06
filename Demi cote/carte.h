@@ -80,7 +80,6 @@ private:
 	// Destructeur de demi-côté privé
 	~DemiCote() = default;
 
-
 	DemiCote* d_suivant;
 	DemiCote* d_precedent;
 	DemiCote* d_oppose;
@@ -145,6 +144,9 @@ public:
 	DemiCote* ajouteCote(const Point& p1, const Point& p2);
 
 
+	void flip(DemiCote* d);
+
+
 private:
 
 	// Ajoute un nouveau demi-côté dans la carte dont precedent sera le demi-côté
@@ -162,6 +164,7 @@ private:
 	// Renvoie l’adresse du nouveau demi-côté.
 	DemiCote* ajouteDemiCote(const Point &p, DemiCote* oppose=nullptr);
 
+	void flipDemiCote(DemiCote* d);
 
     vector<Sommet*> d_tabSommets;       // tableau des sommets
 	vector<DemiCote*> d_tabDemiCotes;   // tableau des demi-côtés

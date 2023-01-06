@@ -1,21 +1,27 @@
-// Demi cote.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <algorithm>
+#include <stack>
 
 #include "carte.h"
 #include "affichage.h"
 #include "graphics.h"
+#include "parser.h"
 
 // Range les points de gauche à droite et de haut en bas
 bool sortPoints(Point a, Point b) {
     return (a.x() < b.x() ? true : (a.x() == b.x()) ? a.y() < b.y() : false);
 }
 
-void triangulation(const vector<Point>& T, Carte& C) {
+Carte triangulation(const vector<Point>& T, Carte& C) {
+    DemiCote* premierDemiCote;
+
     // Créer le premier coté
-    DemiCote* premierDemiCote = C.ajouteCote(T.at(1), T.at(0));
+    if (T.at(1).y() < T.at(0).y()) {
+        premierDemiCote = C.ajouteCote(T.at(0), T.at(1));
+    }
+    else {
+        premierDemiCote = C.ajouteCote(T.at(1), T.at(0));
+    }
 
     // Définir le demi cote particulier qui a l'exterieur sur sa gauche
     C.changeDemiCoteParticulier(premierDemiCote);
@@ -31,6 +37,7 @@ void triangulation(const vector<Point>& T, Carte& C) {
         while (0 > (*it).aGauche(nextDemiCote->coordonnees(), nextDemiCote->oppose()->coordonnees())) {
             nextDemiCote = nextDemiCote->oppose()->suivant();
             C.ajouteCote(demiCoteNouveauPoint, nextDemiCote->precedent());
+
         }
 
         // Repartir du milieu dans l'autre sens
@@ -42,17 +49,120 @@ void triangulation(const vector<Point>& T, Carte& C) {
         }
 
         premierDemiCote = demiCoteNouveauPoint->suivant();
+
+        C.changeDemiCoteParticulier(premierDemiCote);
 	}
 
-    trace(C);
+    /*trace(C);
 
     getch();
-    closegraph();
+    cleardevice();
+
+    C.flip(C.demiCoteParticulier()->suivant());*/
+    /*auto a = C.demiCoteParticulier()->coordonnees();
+    auto b = C.demiCoteParticulier()->oppose()->coordonnees();
+    auto c = C.demiCoteParticulier()->suivant()->oppose()->coordonnees();
+
+    auto d = C.demiCoteParticulier()->precedent()->precedent()->oppose()->coordonnees();
+
+    auto res = d.dansCercle(a, b, c);*/
+
+    return C;
+}
+
+void delaunay(Carte &C) {
+    // Marque l'enveloppe convexe pour le par la calculer dans l'algorithme flip
+    auto currentDemiCote = C.demiCoteParticulier();
+    do {
+        currentDemiCote->changeMarque(1);
+        currentDemiCote->oppose()->changeMarque(1);
+        currentDemiCote = currentDemiCote->oppose()->suivant();
+    } while (C.demiCoteParticulier() != currentDemiCote);
+
+
+    stack<DemiCote*> pile;
+
+    // Rempli la pile des demiCotes internes de la triangulation
+    for (int i = 0; i < C.nbSommets(); i++) {
+        auto demiCoteDuSommet = C.sommet(i)->demiCote();
+
+        do {
+            // Ignore la marque 1
+            if (demiCoteDuSommet->marque() == 0) {
+                pile.push(demiCoteDuSommet); // Ajoute le demiCote à la pile
+                demiCoteDuSommet->changeMarque(1); // Marque 1 pour dire qu'on est déjà passé dessus
+                demiCoteDuSommet->oppose()->changeMarque(1);
+            }
+            demiCoteDuSommet = demiCoteDuSommet->suivant();
+
+        } while (demiCoteDuSommet != C.sommet(i)->demiCote());
+    }
+
+    // Parcourir tous les demiCote de la pile pour flip les triangles illégaux
+    while (pile.size() > 0) {
+
+
+        // Prendre le premier DemiCote de la pile
+        auto premierDemiCote = pile.top();
+        pile.pop();
+        premierDemiCote->changeMarque(0);
+        premierDemiCote->oppose()->changeMarque(0);
+        
+        auto a = premierDemiCote->coordonnees();
+        auto b = premierDemiCote->oppose()->coordonnees();
+        auto c = premierDemiCote->suivant()->oppose()->coordonnees();
+        auto d = premierDemiCote->precedent()->oppose()->coordonnees();
+
+        auto dansCercle = d.dansCercle(a, b, c);
+
+        if (dansCercle > 0) {
+
+            if (premierDemiCote->suivant()->oppose()->marque() == 0) {
+                premierDemiCote->suivant()->changeMarque(1);
+                premierDemiCote->suivant()->oppose()->changeMarque(1);
+                pile.push(premierDemiCote->suivant()->oppose());
+            }
+
+            if (premierDemiCote->suivant()->oppose()->suivant()->marque() == 0) {
+                premierDemiCote->suivant()->oppose()->suivant()->changeMarque(1);
+                premierDemiCote->suivant()->oppose()->suivant()->oppose()->changeMarque(1);
+                pile.push(premierDemiCote->suivant()->oppose()->suivant());
+            }
+
+            if (premierDemiCote->precedent()->oppose()->marque() == 0) {
+                premierDemiCote->precedent()->changeMarque(1);
+                premierDemiCote->precedent()->oppose()->changeMarque(1);
+                pile.push(premierDemiCote->precedent()->oppose());
+            }
+
+            if (premierDemiCote->precedent()->oppose()->precedent()->marque() == 0) {
+                premierDemiCote->precedent()->oppose()->precedent()->changeMarque(1);
+                premierDemiCote->precedent()->oppose()->precedent()->oppose()->changeMarque(1);
+                pile.push(premierDemiCote->precedent()->oppose()->precedent());
+            }
+
+
+            /*if (premierDemiCote->suivant()->oppose()->marque() == 0) {
+                premierDemiCote->suivant()->oppose()->changeMarque(1);
+                premierDemiCote->suivant()->oppose()->suivant()->changeMarque(1);
+                pile.push(premierDemiCote->suivant()->oppose());
+            }
+            
+            if (premierDemiCote->precedent()->oppose()->marque() == 0) {
+                premierDemiCote->precedent()->oppose()->changeMarque(1);
+                premierDemiCote->precedent()->oppose()->precedent()->changeMarque(1);
+                pile.push(premierDemiCote->precedent()->oppose());
+            }*/
+
+            C.flip(premierDemiCote);
+        }
+    }
 }
 
 int main()
 {
-    const int nombreDePoints = 50;
+    const int nombreDePoints = 6;
+    const string cheminAccesTexte = ".\\ile Saint Christophe.txt";
 
     Carte C = Carte();
     vector<Point> nuagePoints;
@@ -61,15 +171,19 @@ int main()
     srand(time(0));
 
     // Créer un nuage de point se trouvant dans la taille de la fenêtre
-    // Créer un nuage de point se trouvant dans la taille de la fenêtre
-    for (int i = 0; i < nombreDePoints; i++) {
-        nuagePoints.push_back(Point(rand() % tailleDeFenetre, rand() % tailleDeFenetre));
-    }
+    /*for (int i = 0; i < nombreDePoints; i++) {
+        nuagePoints.push_back(Point(rand() % tailleDeFenetre, rand() % tailleDeFenetre, 0));
+    }*/
 
-    /*nuagePoints.push_back(Point(100, 300));
-    nuagePoints.push_back(Point(150, 0));
-    nuagePoints.push_back(Point(200, 125));
-    nuagePoints.push_back(Point(350, 100));*/
+    /*nuagePoints.push_back(Point(100, 400, 0));
+    nuagePoints.push_back(Point(100, 150, 0));
+    nuagePoints.push_back(Point(150, 0, 0));
+    nuagePoints.push_back(Point(200, 125, 0));
+    nuagePoints.push_back(Point(350, 300, 0));
+    nuagePoints.push_back(Point(300, 200, 0));*/
+
+    Parser parser;
+    nuagePoints = parser.texteEnPoints(cheminAccesTexte);
 
     // Supprime tous les points dupliqués
     std::sort(nuagePoints.begin(), nuagePoints.end(), sortPoints);
@@ -83,7 +197,18 @@ int main()
         plot(point.x(), tailleDeFenetre - point.y());
     }
 
-	triangulation(nuagePoints, C);
+	C = triangulation(nuagePoints, C);
+
+    trace(C);
+
+    delaunay(C);
+
+    cleardevice();
+
+    trace(C);
+
+    getch();
+    closegraph();
 }
 
 

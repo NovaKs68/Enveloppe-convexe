@@ -7,13 +7,13 @@
 #include "point.h"
 #include "enveloppe.h"
 #include "graphics.h"
+#include "affichage.h"
 
 using namespace std;
 
 int main(int argc, char* argv[], char* envp[])
 {
     const int nombreDePoints = 50;
-    const int tailleDeFenetre = 600;
 
     Polygone P = Polygone();
     vector<Point> nuagePoints;
@@ -22,14 +22,17 @@ int main(int argc, char* argv[], char* envp[])
     srand(time(0));
 
     // Créer un nuage de point se trouvant dans la taille de la fenêtre
-    /*for (int i = 0; i < nombreDePoints; i++) {
+    for (int i = 0; i < nombreDePoints; i++) {
         nuagePoints.push_back(Point(rand() % tailleDeFenetre, rand() % tailleDeFenetre));
-    }*/
+    }
 
     /*nuagePoints.push_back(Point(10, 10));
     nuagePoints.push_back(Point(30, 30));
-    nuagePoints.push_back(Point(35, 50));
-    nuagePoints.push_back(Point(60, 10));*/
+    nuagePoints.push_back(Point(35, 50));*/
+    //nuagePoints.push_back(Point(60, 10));
+    //nuagePoints.push_back(Point(10, 30));
+    //nuagePoints.push_back(Point(10, 50));
+    //nuagePoints.push_back(Point(10, 60));
 
     /*nuagePoints.push_back(Point(10, 10));
     nuagePoints.push_back(Point(50, 70));
@@ -48,11 +51,11 @@ int main(int argc, char* argv[], char* envp[])
     nuagePoints.push_back(Point(30, 10));
     nuagePoints.push_back(Point(30, 20));*/
 
-    nuagePoints.push_back(Point(10, 10));
+    /*nuagePoints.push_back(Point(10, 10));
     nuagePoints.push_back(Point(10, 20));
     nuagePoints.push_back(Point(10, 30));
     nuagePoints.push_back(Point(10, 40));
-    nuagePoints.push_back(Point(30, 20));
+    nuagePoints.push_back(Point(30, 20));*/
 
     // Supprime tous les points dupliqués
     std::sort(nuagePoints.begin(), nuagePoints.end(), sortPoints);
@@ -60,10 +63,10 @@ int main(int argc, char* argv[], char* envp[])
     
     // Affiche tous les points sur la fenêtre
     // (agrandissement de la fenêtre pour que tous les points soient visibles)
-    opengraphsize(tailleDeFenetre + 50, tailleDeFenetre + 50);
+    opengraphsize(tailleDeFenetre + 30, tailleDeFenetre + 30);
     for (auto point : nuagePoints)
     {
-        plot(point.x(), point.y());
+        plot(point.x(), tailleDeFenetre - point.y());
     }
 
     // Créer l'enveloppe convexe à partir d'un nuage de points

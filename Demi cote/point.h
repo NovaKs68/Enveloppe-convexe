@@ -6,8 +6,8 @@ class Point
 
 public:
 	// constructeurs
-	Point() : d_x{0},d_y{0} {}
-	Point(int x, int y) : d_x{x},d_y{y} {}
+	Point() : d_x{ 0 }, d_y{ 0 }, d_z{ 0 } {}
+	Point(int x, int y, int z) : d_x{ x }, d_y{ y }, d_z{ z } {}
 	// accesseurs
 	int x() const {return d_x;}
 	int y() const {return d_y;}
@@ -16,11 +16,13 @@ public:
 	// à gauche de, à droite de, ou sur la droite (ab) orientée de a vers b.
 	int aGauche(const Point &a, const Point &b) const;
 
+	int dansCercle(const Point& a, const Point& b, const Point& c) const;
+
 	// Compare les coordonnées de deux points
 	bool operator==(const Point&);
 private:
     // coordonnées
-	int d_x, d_y;
+	int d_x, d_y, d_z;
 };
 
 #endif

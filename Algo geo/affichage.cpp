@@ -6,7 +6,7 @@
 // trace un segment entre deux points a et b
 void segment(const Point & a, const Point & b)
 {
-    line(a.x(), a.y(), b.x(), b.y());
+    line(a.x(), tailleDeFenetre - a.y(), b.x(), tailleDeFenetre - b.y());
 }
 
 

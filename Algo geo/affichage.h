@@ -4,6 +4,8 @@
 #include "point.h"
 #include "polygone.h"
 
+const int tailleDeFenetre = 600;
+
 // trace un segment entre deux points a et b
 void segment(const Point & a, const Point & b);
 

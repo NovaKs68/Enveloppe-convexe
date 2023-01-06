@@ -8,28 +8,15 @@
 
 using namespace std;
 
-// Construit dans le polygone P l’enveloppe convexe des trois points a,b,c. On suppose P initialement vide.
-// La fonction renvoie l’adresse du sommet de coordonnées c.
-Sommet* enveloppe(const Point &a, const Point &b, const Point &c, Polygone &P)
+// Construit dans le polygone P l’enveloppe convexe des deux points a,b. On suppose P initialement vide.
+// La fonction renvoie l’adresse du sommet de coordonnées b.
+Sommet* enveloppe(const Point &a, const Point &b, Polygone &P)
 {
 	// Créer le premier sommet a
 	P.ajouteSommet(a);
+	P.ajouteSommet(b, P.premier());
 
-	// Créer abc si le point c se trouve à gauche de a b
-	if (0 < c.aGauche(a, b)) {
-		P.ajouteSommet(b, P.premier());
-		P.ajouteSommet(c, P.premier()->suivant());
-
-		// Retourne le point c
-		return P.premier()->suivant()->suivant();
-
-	} else { // Sinon créer acb
-		P.ajouteSommet(c, P.premier());
-		P.ajouteSommet(b, P.premier()->suivant());
-
-		// Retourne le point c
-		return P.premier()->suivant();
-	}
+	return P.premier()->suivant();
 }
 
 
@@ -40,64 +27,60 @@ void enveloppe(std::vector<Point>&T, Polygone &P)
 	// Ordonne les points
 	std::sort(T.begin(), T.end(), sortPoints);
 
+	// Créer le polygone avec les deux premiers points
+	int i = 1;
+
+	// Si les premiers points se trouvent dans le même axe x alors,
+	// ne récupérer que les points extrêmes sur l'axe x
+	if (T.at(0).x() == T.at(1).x() && T.at(1).x() == T.at(2).x()) {
+		i = 2;
+		
+		for (auto it = T.begin() + 3; it < T.end(); ++it)
+		{
+			if ((*(it - 1)).x() == (*it).x()) {
+				i++;
+			}
+			else {
+				break;
+			}
+		}
+	}
+
 	// Défini le premier polygone
-	Sommet* sommet = enveloppe(T.at(0), T.at(1), T.at(2), P);
+	Sommet* sommetPrecedementAjoute = enveloppe(T.at(0), T.at(i), P);
 
 	// Parcours tous les points
-	for (auto it = T.begin() + 3; it != T.end(); ++it) {
-		/*cleardevice();
-		for (auto point : T)
-		{
-			plot(point.x(), point.y());
-		}*/
-
-		Sommet* nextSommet = sommet;
-		Sommet* premierSommet = NULL;
-		Sommet* dernierSommet;
+	for (auto it = T.begin() + i + 1; it != T.end(); ++it) {
+		Sommet* sommetIterateur = sommetPrecedementAjoute;
+		Sommet* premierSommet = sommetPrecedementAjoute;
+		Sommet* dernierSommet = sommetPrecedementAjoute;
 
 		// Trouver le premier point
-		do {
-
-			if (0 < (*it).aGauche(nextSommet->coordonnees(), nextSommet->suivant()->coordonnees())) {
-				premierSommet = nextSommet;
-				break;
-			}
-
-			nextSommet = nextSommet->suivant();
-		} while (nextSommet != sommet);
-
-		if (premierSommet == NULL) {
-			sommet = P.ajouteSommet(*it, sommet);
-			// sommet = sommet->suivant();
-
-			continue;
+		while (0 > (*it).aGauche(sommetIterateur->coordonnees(), sommetIterateur->suivant()->coordonnees())) {
+			premierSommet = sommetIterateur->suivant();
+			sommetIterateur = sommetIterateur->suivant();
 		}
+
+		sommetIterateur = sommetPrecedementAjoute;
 
 		// Trouver le dernier point
-		while (true) {
-			if (0 < (*it).aGauche(nextSommet->precedent()->coordonnees(), nextSommet->coordonnees())) {
-				dernierSommet = nextSommet;
-				break;
-			}
-
-			nextSommet = nextSommet->precedent();
+		while (0 < (*it).aGauche(sommetIterateur->coordonnees(), sommetIterateur->precedent()->coordonnees())) {
+			dernierSommet = sommetIterateur->precedent();
+			sommetIterateur = sommetIterateur->precedent();
 		}
 
-		nextSommet = nextSommet->suivant();
+		sommetIterateur = sommetIterateur->suivant();
 
 		// Supprimer tous les points se trouvant entre le premier et le dernier
-		while (nextSommet != premierSommet) {
-			P.supprimeSommet(nextSommet);
+		while (sommetIterateur != premierSommet) {
+			P.supprimeSommet(sommetIterateur);
 
-			nextSommet = nextSommet->suivant();
+			sommetIterateur = sommetIterateur->suivant();
 		}
 
 		// Ajoute le nouveau sommet
 		P.ajouteSommet(*it, dernierSommet);
-		sommet = dernierSommet->suivant();
-
-		/*trace(P);
-		getch();*/
+		sommetPrecedementAjoute = dernierSommet->suivant();
 	}
 
 	// Affiche le polygone

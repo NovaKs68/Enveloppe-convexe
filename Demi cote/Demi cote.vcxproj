@@ -130,6 +130,7 @@
     <ClCompile Include="affichage.cpp" />
     <ClCompile Include="carte.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="parser.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="winbgi.cpp" />
   </ItemGroup>
@@ -137,7 +138,11 @@
     <ClInclude Include="affichage.h" />
     <ClInclude Include="carte.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="parser.h" />
     <ClInclude Include="point.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ile Saint Christophe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

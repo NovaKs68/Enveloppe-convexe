@@ -15,11 +15,12 @@ void trace(const Carte &C)
     for (size_t i = 0; i < C.nbDemiCotes(); i++)
     {
         auto demiCoteATrace = C.demiCote(i);
-        
+
         if (demiCoteATrace->index() < demiCoteATrace->oppose()->index()) {
             segment(demiCoteATrace->coordonnees(), demiCoteATrace->oppose()->coordonnees());
         }
     }
+    
 }
 
 
