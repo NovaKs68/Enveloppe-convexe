@@ -53,25 +53,11 @@ Carte triangulation(const vector<Point>& T, Carte& C) {
         C.changeDemiCoteParticulier(premierDemiCote);
 	}
 
-    /*trace(C);
-
-    getch();
-    cleardevice();
-
-    C.flip(C.demiCoteParticulier()->suivant());*/
-    /*auto a = C.demiCoteParticulier()->coordonnees();
-    auto b = C.demiCoteParticulier()->oppose()->coordonnees();
-    auto c = C.demiCoteParticulier()->suivant()->oppose()->coordonnees();
-
-    auto d = C.demiCoteParticulier()->precedent()->precedent()->oppose()->coordonnees();
-
-    auto res = d.dansCercle(a, b, c);*/
-
     return C;
 }
 
 void delaunay(Carte &C) {
-    // Marque l'enveloppe convexe pour le par la calculer dans l'algorithme flip
+    // Marque l'enveloppe convexe pour ne pas la calculer dans l'algorithme flip
     auto currentDemiCote = C.demiCoteParticulier();
     do {
         currentDemiCote->changeMarque(1);
@@ -141,19 +127,6 @@ void delaunay(Carte &C) {
                 pile.push(premierDemiCote->precedent()->oppose()->precedent());
             }
 
-
-            /*if (premierDemiCote->suivant()->oppose()->marque() == 0) {
-                premierDemiCote->suivant()->oppose()->changeMarque(1);
-                premierDemiCote->suivant()->oppose()->suivant()->changeMarque(1);
-                pile.push(premierDemiCote->suivant()->oppose());
-            }
-            
-            if (premierDemiCote->precedent()->oppose()->marque() == 0) {
-                premierDemiCote->precedent()->oppose()->changeMarque(1);
-                premierDemiCote->precedent()->oppose()->precedent()->changeMarque(1);
-                pile.push(premierDemiCote->precedent()->oppose());
-            }*/
-
             C.flip(premierDemiCote);
         }
     }
@@ -163,6 +136,7 @@ int main()
 {
     const int nombreDePoints = 6;
     const string cheminAccesTexte = ".\\ile Saint Christophe.txt";
+    const string cheminAccesOBJ = ".\\resultat.obj";
 
     Carte C = Carte();
     vector<Point> nuagePoints;
@@ -182,6 +156,7 @@ int main()
     nuagePoints.push_back(Point(350, 300, 0));
     nuagePoints.push_back(Point(300, 200, 0));*/
 
+    // Parse le fichier texte en points
     Parser parser;
     nuagePoints = parser.texteEnPoints(cheminAccesTexte);
 
@@ -199,13 +174,12 @@ int main()
 
 	C = triangulation(nuagePoints, C);
 
-    trace(C);
-
     delaunay(C);
 
-    cleardevice();
 
     trace(C);
+
+    parser.carteEnOBJ(C, cheminAccesOBJ);
 
     getch();
     closegraph();
