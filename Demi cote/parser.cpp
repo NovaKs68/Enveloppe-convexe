@@ -75,7 +75,7 @@ void Parser::carteEnOBJ(const Carte C, const std::string cheminAccesOBJ) {
         auto demiCoteATrace = initialDemiCote;
     }
 
-    // Marque l'enveloppe convexe pour ne pas la calculer dans l'algorithme flip
+    // Marque l'enveloppe convexe
     auto currentDemiCote = C.demiCoteParticulier();
     do {
         currentDemiCote->changeMarque(2);
@@ -84,14 +84,13 @@ void Parser::carteEnOBJ(const Carte C, const std::string cheminAccesOBJ) {
     } while (C.demiCoteParticulier() != currentDemiCote);
 
 
-    // Rempli la pile des demiCotes internes de la triangulation
     for (int i = 0; i < C.nbSommets(); i++) {
         auto demiCoteDuSommet = C.sommet(i)->demiCote();
-
+        // Ignore l'enveloppe
         do {
-            // Ignore la marque 1
             if (demiCoteDuSommet->marque() < 2) {
 
+                // Créer le triangle
                 auto a = demiCoteDuSommet->coordonnees();
                 auto b = demiCoteDuSommet->oppose()->coordonnees();
                 auto c = demiCoteDuSommet->suivant()->oppose()->coordonnees();
@@ -111,5 +110,4 @@ void Parser::carteEnOBJ(const Carte C, const std::string cheminAccesOBJ) {
     }
 
     myfile.close();
-
 }
